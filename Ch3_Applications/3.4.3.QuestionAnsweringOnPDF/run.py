@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
-
 load_dotenv()
+
 from intentservice import IntentService
 from responseservice import ResponseService
 from dataservice import DataService
@@ -22,7 +22,7 @@ intent_service = IntentService()
 response_service = ResponseService()
 
 # Question 
-question = 'Where to find treasure chests?'
+question = '보물 상자는 어디서 찾을 수 있나요?'
 # Get the intent
 intents = intent_service.get_intent(question)
 # Get the facts

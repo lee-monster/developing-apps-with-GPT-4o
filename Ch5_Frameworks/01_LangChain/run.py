@@ -3,7 +3,9 @@ from langchain.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 from langchain.agents import load_tools, create_react_agent, AgentExecutor
 from langchain import hub
+from dotenv import load_dotenv
 
+load_dotenv()
 
 template = """Question: {question} Let's think step by step.
 Answer: """

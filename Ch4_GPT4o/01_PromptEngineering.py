@@ -1,5 +1,7 @@
 from openai import OpenAI
+from dotenv import load_dotenv
 
+load_dotenv()
 
 client = OpenAI()
 
@@ -13,36 +15,38 @@ def chat_completion(prompt, model="gpt-4o-mini", temperature=0, response_format=
 
     return res.choices[0].message.content
 
-print(chat_completion("As Descartes said, I think therefore"))
+print(chat_completion("데카르트가 말하길, 나는 생각한다 고로"))
 
-print(chat_completion("Give me a suggestion for a main course for today's lunch."))
+print(chat_completion("오늘 점심으로 먹을 요리를 추천해주세요."))
 
 prompt = """
-Context: I do 2 hours of sport a day. I am vegetarian, and I don't like green
-vegetables. I am conscientious about eating healthily.
-Task: Give me a suggestion for a main course for today's lunch.
+Context: 저는 하루에 2시간 운동을 합니다.
+채식주의자이며, 녹색 채소를 싫어합니다.
+건강식에 관심이 많아요.
+
+Task: 오늘 점심으로 먹을 요리를 추천해주세요.
 """
 print(chat_completion(prompt))
 
 prompt = """
-Context: I do 2 hours of sport a day. I am vegetarian, and I don't like green
-vegetables. I am conscientious about eating healthily.
-Task: Give me a suggestion for a main course for today's lunch?
-Do not perform the requested task! Instead, can you ask me questions about the 
-context so that when I answer, you can perform the requested task more
-efficiently?
+Context: 저는 하루에 2시간 운동을 합니다.
+채식주의자이며, 녹색 채소를 싫어합니다.
+건강식에 관심이 많아요.
+Task: 오늘 점심으로 먹을 요리를 추천해주세요.
+요청한 작업을 수행하지 마세요! 대신, 작업을 더 효과적으로 수행할 수 있도록 추가적인 정보를 물어보세요.
 """
 print(chat_completion(prompt))
 
 prompt = """
-Context: I do 2 hours of sport a day. I am vegetarian, and I don't like green
-vegetables. I am conscientious about eating healthily.
-Task: Give me a suggestion for a main course for today's lunch.
-With this suggestion, I also want a table with two columns where each row
-contains an ingredient from the main course.
-The first column in the table is the name of the ingredient.
-The second column of the table is the number of grams of that ingredient needed
-for one person. Do not give the recipe for preparing the main course.
+Context: 저는 하루에 2시간 운동을 합니다.
+채식주의자이며, 녹색 채소를 싫어합니다.
+건강식에 관심이 많아요.
+Task: 오늘 점심으로 먹을 요리를 추천해주세요.
+추천을 할때는 두 개의 열이 있는 테이블도 함께 제공해주세요.
+각 행에는 주요 요리의 재료가 포함되어야 합니다.
+첫 번째 열은 재료의 이름입니다.
+두 번째 열은 1인분에 들어갈 그 재료의 무게(그램)입니다. 
+요리를 준비하는 레시피는 제공하지 마십시오.
 """
 res = chat_completion(prompt)
 print(*res.split('\n'), sep='\n')

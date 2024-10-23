@@ -15,7 +15,7 @@ Settings.llm = OpenAI(model="gpt-4o-mini")
 Settings.embed_model = OpenAIEmbedding()
 
 # Connect to Weaviate client and create a vector store
-client = weaviate.Client(url="http://localhost:8080")
+client = weaviate.connect_to_local()
 vector_store = WeaviateVectorStore(
     weaviate_client=client, index_name="BlogPost", text_key="content")
 
@@ -32,3 +32,5 @@ index = VectorStoreIndex.from_documents(
 query_engine = index.as_query_engine()
 response = query_engine.query("링크의 전형적인 의상 색깔은 무엇인가요?")
 print(response)
+
+client.close()

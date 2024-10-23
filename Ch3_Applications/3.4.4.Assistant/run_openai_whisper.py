@@ -5,38 +5,38 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-starting_prompt = """You are an assistant.
-You can discuss with the user, or perform email tasks. Emails require subject, recipient, and body.
-You will receive either intructions starting with [Instruction] , or user input starting with [User]. Follow the instructions.
+starting_prompt = """당신은 어시스턴트입니다.
+사용자와 토론하거나 이메일 작업을 수행할 수 있습니다. 이메일은 제목, 수신자 및 본문이 필요합니다.
+지시 사항은 [Instruction]으로 시작하고 사용자 입력은 [User]로 시작합니다. 지시에 따르십시오.
 """
 
-prompts = {'START': '[Instruction] Write WRITE_EMAIL if the user wants to write an email, "QUESTION" if the user has a precise question, "OTHER"  in any other case. Only write one word.',
-           'QUESTION': '[Instruction] If you can answer the question, write "ANSWER", if you need more information write MORE, if you cannot answer write "OTHER". Only write one word.',
-           'ANSWER': '[Instruction] Answer the user''s question',
-           'MORE': '[Instruction] Ask the user for more information as specified by previous intructions',
-           'OTHER': '[Instruction] Give a polite answer or greetings if the user is making polite conversation. Else, answer to the user that you cannot answer the question or do the action',
-           'WRITE_EMAIL': '[Instruction] If the subject or recipient or body is missing,  answer "MORE". Else if you have all the information answer "ACTION_WRITE_EMAIL | subject:subject, recipient:recipient, message:message". ',
-           'ACTION_WRITE_EMAIL': '[Instruction] The mail has been sent. Answer to the user to  tell the action is done'}
+prompts = {'START': '[Instruction] 사용자가 이메일을 작성하고 싶다면 "WRITE_EMAIL", 질문을 입력했다면 "QUESTION", 그 외의 요구를 했다면 "OTHER"를 답변합니다. 딱 한 단어만 답변하세요.',
+           'QUESTION': '[Instruction] 질문에 답할 수 있다면 "ANSWER", 추가적인 정보가 필요하다면 "MORE", 답변할 수 있다면 "OTHER"를 답변합니다. 딱 한 단어만 답변하세요.',
+           'ANSWER': '[Instruction] 사용자의 질문에 답변하세요.',
+           'MORE': '[Instruction] 사용자의 앞선 지시에 따라 추가 정보를 요청하세요.',
+           'OTHER': '[Instruction] 사용자가 예의바르게 대화를 나누고 있다면 예의바르게 대답하거나 인사를 건네세요. 그렇지 않다면 사용자에게 답변할 수 없다고 알려주세요.',
+           'WRITE_EMAIL': '[Instruction] 제목이나 내용이 누락된 경우 "MORE"를 답변하세요. 모든 정보가 있다면 "ACTION_WRITE_EMAIL | subject:subject, recipient:recipient, message:message"를 답변하세요.',
+           'ACTION_WRITE_EMAIL': '[Instruction] 메일이 전송되었습니다. 사용자에게 작업이 완료되었다고 알려주세요.'}
 actions = ['ACTION_WRITE_EMAIL']
 
 
 class Discussion:
     """
-    A class representing a discussion with a voice assistant.
+    어시스턴트와의 대화를 나타내는 클래스입니다.
 
     Attributes:
-        state (str): The current state of the discussion.
-        messages_history (list): A list of dictionaries representing the history of messages in the discussion.
-        client: An instance of the OpenAI client.
-        stt_model: The speech-to-text model used for transcribing audio.
+        state (str): 대화의 현재 상태
+        messages_history (list): 대화의 메시지 이력을 나타내는 딕셔너리 리스트
+        client: 오픈AI 클라이언트의 인스턴스
+        stt_model: 오디오를 전사하는 데 사용되는 음성 인식 모델
 
     Methods:
-        generate_answer: Generates an answer based on the given messages.
-        reset: Resets the discussion to the initial state.
-        do_action: Performs the specified action.
-        transcribe: Transcribes the given audio file.
-        discuss_from_audio: Starts a discussion based on the transcribed audio file.
-        discuss: Continues the discussion based on the given input.
+        generate_answer: 입력된 메시지를 기반으로 답변을 생성
+        reset: 대화를 초기 상태로 재설정
+        do_action: 지정된 작업을 수행
+        transcribe: 주어진 오디오 파일을 전사
+        discuss_from_audio: 전사된 오디오 파일을 기반으로 대화 시작
+        discuss: 주어진 입력을 기반으로 대화 계속
     """
 
     def __init__(
@@ -71,10 +71,10 @@ class Discussion:
 
     def do_action(self, action):
         """
-        Performs the specified action.
+        특정 작업을 수행합니다.
 
         Args:
-            action (str): The action to perform.
+            action (str): 수행할 작업
         """
         print(f'DEBUG perform action={action}')
         pass
@@ -88,41 +88,41 @@ class Discussion:
 
     def discuss_from_audio(self, file):
         if file:
-            # Transcribe the audio file and use the input to start the discussion
+            # 오디오 파일을 전사하고 입력을 사용하여 토론 시작
             return self.discuss(f'[User] {self.transcribe(file)}')
-        # Empty output if there is no file
+        # 파일이 없는 경우 빈 출력
         return ''
 
     def discuss(self, input=None):
         if input is not None:
             self.messages_history.append({"role": "user", "content": input})
 
-        # Generate a completion
+        # 대화를 계속
         completion = self.generate_answer(
             self.messages_history +
             [{"role": "user", "content": prompts[self.state]}])
 
-        # Is the completion an action ?
+        # 응답 내용이 작업인지 확인
         if completion.split("|")[0].strip() in actions:
             action = completion.split("|")[0].strip()
             self.to_state(action)
             self.do_action(completion)
-            # Continue discussion
+            # 대화를 계속
             return self.discuss()
-        # Is the completion a new state ?
+        # 응답 내용이 새로운 상태인지 확인
         elif completion in prompts:
             self.to_state(completion)
-            # Continue discussion
+            # 대화를 계속
             return self.discuss()
-        # Is the completion an output for the user ?
+        # 응답 내용이 사용자에게 전달할 내용인지 확인
         else:
             self.messages_history.append(
                 {"role": "assistant", "content": completion})
             if self.state != 'MORE':
-                # Get back to start
+                # 재시작
                 self.reset()
             else:
-                # Get back to previous state
+                # 이전 상태로 돌아가기
                 self.reset_to_previous_state()
             return completion
 

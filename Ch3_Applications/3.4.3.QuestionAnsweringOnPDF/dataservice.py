@@ -97,7 +97,7 @@ class DataService():
                      k: int = 5,
                      print_results: bool = False,
                      ):
-        # Creates embedding vector from user query
+        # 사용자 쿼리에서 임베딩 벡터 생성
         embedded_query = client.embeddings.create(input=user_query,
                                                  model="text-embedding-ada-002").data[0].embedding
         # Prepare the Query
@@ -111,7 +111,7 @@ class DataService():
         )
         params_dict = {"vector": np.array(
             embedded_query).astype(dtype=np.float32).tobytes()}
-        # perform vector search
+        # 벡터 검색
         results = self.redis_client.ft(index_name).search(query, params_dict)
         if print_results:
             for i, doc in enumerate(results.docs):

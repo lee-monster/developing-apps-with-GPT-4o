@@ -1,5 +1,3 @@
-import gradio as gr
-import whisper
 from openai import OpenAI
 from dotenv import load_dotenv
 
@@ -10,13 +8,25 @@ starting_prompt = """당신은 어시스턴트입니다.
 지시 사항은 [Instruction]으로 시작하고 사용자 입력은 [User]로 시작합니다. 지시에 따르십시오.
 """
 
-prompts = {'START': '[Instruction] 사용자가 이메일을 작성하고 싶다면 "WRITE_EMAIL", 질문을 입력했다면 "QUESTION", 그 외의 요구를 했다면 "OTHER"를 답변합니다. 딱 한 단어만 답변하세요.',
-           'QUESTION': '[Instruction] 질문에 답할 수 있다면 "ANSWER", 추가적인 정보가 필요하다면 "MORE", 답변할 수 있다면 "OTHER"를 답변합니다. 딱 한 단어만 답변하세요.',
-           'ANSWER': '[Instruction] 사용자의 질문에 답변하세요.',
-           'MORE': '[Instruction] 사용자의 앞선 지시에 따라 추가 정보를 요청하세요.',
-           'OTHER': '[Instruction] 사용자가 예의바르게 대화를 나누고 있다면 예의바르게 대답하거나 인사를 건네세요. 그렇지 않다면 사용자에게 답변할 수 없다고 알려주세요.',
-           'WRITE_EMAIL': '[Instruction] 제목이나 내용이 누락된 경우 "MORE"를 답변하세요. 모든 정보가 있다면 "ACTION_WRITE_EMAIL | subject:subject, recipient:recipient, message:message"를 답변하세요.',
-           'ACTION_WRITE_EMAIL': '[Instruction] 메일이 전송되었습니다. 사용자에게 작업이 완료되었다고 알려주세요.'}
+prompts = {
+    'START': '[Instruction] 사용자가 이메일을 작성하고 싶다면 "WRITE_EMAIL",\
+        질문을 입력했다면 "QUESTION", 그 외의 요구를 했다면 "OTHER"를 답변합니다.\
+        딱 한 단어만 답변하세요.',
+    'QUESTION': '[Instruction] 질문에 답할 수 있다면 "ANSWER",\
+        추가적인 정보가 필요하다면 "MORE",\
+        답변할 수 있다면 "OTHER"를 답변합니다.\
+        딱 한 단어만 답변하세요.',
+    'ANSWER': '[Instruction] 사용자의 질문에 답변하세요.',
+    'MORE': '[Instruction] 사용자의 앞선 지시에 따라 추가 정보를 요청하세요.',
+    'OTHER': '[Instruction] 사용자가 예의바르게 대화를 시작한 상황이라면\
+        예의바르게 대답하거나 인사를 건네세요.\
+        그외의 경우 사용자에게 답변할 수 없다고 답변하세요.',
+    'WRITE_EMAIL': '[Instruction] 제목이나 내용이 누락된 경우 "MORE"를 답변하세요.\
+        모든 정보가 있다면 다음과 같이 답변하세요.\
+        "ACTION_WRITE_EMAIL | subject:subject, recipient:recipient, message:message"',
+    'ACTION_WRITE_EMAIL': '[Instruction] 메일이 전송되었습니다.\
+    사용자에게 작업이 완료되었다고 알려주세요.'
+    }
 actions = ['ACTION_WRITE_EMAIL']
 
 
@@ -113,7 +123,6 @@ class Discussion:
 if __name__ == '__main__':
     discussion = Discussion()
 
-    
     while True:
         message = input('User: ')
         print(f'Assistant: {discussion.discuss(message)}')

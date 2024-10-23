@@ -161,3 +161,4 @@ cython_debug/
 
 transcript.txt
 video.mp4
+.DS_Store

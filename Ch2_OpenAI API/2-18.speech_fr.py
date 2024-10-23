@@ -5,7 +5,7 @@ load_dotenv()
 from openai import OpenAI
 client = OpenAI()
 
-speech_file_path = Path(__file__).parent / "speech_fr.mp3"
+speech_file_path = Path(__file__).parent.joinpath("speech_fr.mp3")
 response = client.audio.speech.create(
     model='tts-1',
     voice='echo',

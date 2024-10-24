@@ -25,7 +25,7 @@ def assist_journalist(
     prompt = f"{prompt_role} \
         FACTS: {facts} \
         TONE: {tone} \
-        LENGTH: {length_words} words \
+        LENGTH: {length_words} 단어 \
         STYLE: {style}"
     return ask_chatGPT ([{"role": "user", "content": prompt}])
 
@@ -41,7 +41,7 @@ print(
         facts=[
             "이번주 챗GPT 관련 도서가 출간되었습니다.",
             "제목은 오픈AI API를 활용한 인공지능 앱 개발입니다.",
-            "출판사는 한빛미디어입니다..",
+            "출판사는 한빛미디어입니다.",
         ],
         tone="흥분됨",
         length_words=50,

@@ -24,7 +24,7 @@ response = client.chat.completions.create(
             'content': [
                 {
                     'type': 'text',
-                    'text': '두 이미지의 차이를 설명하세요',
+                    'text': '두 이미지의 차이를 설명하세요.',
                 },
                 {
                     'type': 'image_url',

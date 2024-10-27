@@ -8,7 +8,7 @@ client = OpenAI()
 
 # chat.completions 엔드포인트를 호출합니다.
 response = client.chat.completions.create( model='gpt-4o',
-    messages=[{'role': 'user', 'content': '프롬프트를 입력하세요'}], )
+    messages=[{'role': 'user', 'content': '프롬프트를 입력하세요.'}], )
 
 # 응답을 확인합니다.
 print(response.choices[0].message.content)

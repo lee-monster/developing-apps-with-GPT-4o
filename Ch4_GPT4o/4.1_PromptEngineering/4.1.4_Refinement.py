@@ -19,7 +19,7 @@ def chat_completion(prompt, model="gpt-4o", temperature=0, response_format=None)
 def the_reviewer(prompt_initialization, current_prompt):
     
     prompt_reviewer = prompt_initialization + "\n\n"
-    prompt_reviewer += f"현재 프롬프트입니다.: {current_prompt}\n\n"
+    prompt_reviewer += f"현재 프롬프트: {current_prompt}\n\n"
     prompt_reviewer += """작업: 현재 프롬프트를 상세하고 철저하게 평가하세요.
     먼저 현재 프롬프트에 0점에서 5점 사이의 점수를 매겨주세요(0은 매우 나쁨, 5는 매우 좋음).
     그 후, 프롬프트를 5점짜리 완벽한 프롬프트가 되기 위해 개선할 점들을 간략한 문단으로 설명하세요."""
@@ -34,12 +34,12 @@ def the_reviewer(prompt_initialization, current_prompt):
 def the_questioner(prompt_initialization, current_prompt, reviews, questions_answers):
         
         prompt_questioner = prompt_initialization + "\n\n"
-        prompt_questioner += f"현재 프롬프트입니다: {current_prompt}\n\n"
-        prompt_questioner += f"현재 프롬프트에 대한 평가입니다:{reviews}\n\n"
+        prompt_questioner += f"현재 프롬프트: {current_prompt}\n\n"
+        prompt_questioner += f"현재 프롬프트에 대한 평가:{reviews}\n\n"
         prompt_questioner += """
         작업: 프롬프트를 개선하기 위해 반드시 필요한 최대 4개의 질문 목록을 작성하세요(각 질문에 대한 예시 답변도 괄호 안에 제공하세요).
         출력 형식: JSON 형식으로 출력하세요. 
-        출력은 json.loads로 읽을 수 있어야 합니다. JSON 형식은 다음과 같습니다:
+        출력은 json.loads로 읽을 수 있어야 합니다. JSON 형식은 다음과 같습니다.
         {'Questions': ['Question 1', 'Question 2', 'Question 3', 'Question 4']}
         """
         
@@ -61,9 +61,9 @@ def the_questioner(prompt_initialization, current_prompt, reviews, questions_ans
 def the_prompt_maker(prompt_initialization, current_prompt, reviews, questions_answers):
      
     prompt =  prompt_initialization + "\n\n"
-    prompt += f"현재 프롬프트입니다: {current_prompt}\n\n"
-    prompt += f"해당 프롬프트에 대한 평가 결과입니다:{reviews}\n\n"
-    prompt += f"현재 프롬프트를 개선하는 데 필요한 질문과 답변입니다:{questions_answers}\n\n"
+    prompt += f"현재 프롬프트: {current_prompt}\n\n"
+    prompt += f"해당 프롬프트에 대한 평가:{reviews}\n\n"
+    prompt += f"현재 프롬프트를 개선하는 데 필요한 질문과 답변:{questions_answers}\n\n"
     prompt += """
     작업: 이 모든 정보와 프롬프트 엔지니어링 전문 지식을 최대한 활용하여
     현재 프롬프트를 최적의 방식으로 다시 작성해 주세요.
@@ -107,6 +107,6 @@ def promptor(initial_prompt, max_nb_iter=3):
     return current_prompt
 
 
-prompt = promptor("오늘 점심으로 먹을 메인 코스를 제안해주세요",  max_nb_iter=3)
+prompt = promptor("오늘 점심으로 먹을 메인 코스를 제안해주세요.",  max_nb_iter=3)
 res = chat_completion(prompt)
 print(res)

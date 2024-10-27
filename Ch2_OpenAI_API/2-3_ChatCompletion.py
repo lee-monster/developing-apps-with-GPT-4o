@@ -10,7 +10,7 @@ response = client.chat.completions.create(
     #  GPT-4o mini 모델 지정 및 채팅 완성 기능 호출
     model='gpt-4o-mini',
     messages=[
-        {'role': 'system', 'content': '당신은 친절한 교사입니다..'},
+        {'role': 'system', 'content': '당신은 친절한 교사입니다.'},
         {
             'role': 'user',
             'content': '시간 복잡도 외에도 알고리즘의 다른 측정 방법이 있나요?',

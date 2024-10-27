@@ -8,7 +8,7 @@ client = OpenAI()
 
 prompt_role = '''당신은 기자를 도와주는 어시스턴트입니다.
 당신의 임무는 주어진 사실을 기반으로 기사(FACTS)를 쓰는 것입니다.
-다음 지시 사항을 준수해야 합니다: TONE, LENGTH, STYLE'''
+다음 지시 사항을 준수해야 합니다. TONE, LENGTH, STYLE'''
 
 def ask_chatGPT (messages):
     response = client.chat.completions.create(
